@@ -1,11 +1,11 @@
 {
-    "name": "domo1",
+    "name": "project2",
     "version": "1.0.0",
     "engines": {
         "node": "17.4.0",
         "npm": "8.3.1"
     },
-    "description": "A Simple Login Example using Node.js, Mongo and Redis",
+    "description": "A pantry store that can store all your pantry data",
     "main": "./server/app.js",
     "scripts": {
         "webpack": "webpack",
@@ -22,7 +22,7 @@
         "Redis",
         "Login"
     ],
-    "author": "Cody Van De Mark / Austin Willoughby",
+    "author": "Samar Karnani",
     "license": "Apache 2.0",
     "devDependencies": {
         "@babel/core": "^7.17.8",

@@ -52,10 +52,10 @@ nav:nth-child(1) {
     background-color: #66bdff;
 }
 
-.domoForm {
+.ingredientForm {
     border: 2px solid #338acc;
     height: 35px;
-    width: 900px;
+    width: 1200px;
     margin-top: 0px;
     padding-top: 10px;
     background-color: #55acee;
@@ -63,7 +63,7 @@ nav:nth-child(1) {
     border-top-right-radius: 4px;
 }
 
-.domoForm label {
+.ingredientForm label {
     display: inline-block;
     width: 75px;
     margin-left: 10px;
@@ -71,10 +71,10 @@ nav:nth-child(1) {
     color: white;
 }
 
-.makeDomoSubmit {
+.makeIngredientSubmit {
     transition: background-color 0.4s ease;
     display: inline;
-    width: 90px;
+    /* width: 90px; */
     background-color: #55acee;
     border-radius: 2px;
     color: white;
@@ -82,14 +82,14 @@ nav:nth-child(1) {
     float: right;
 }
 
-.makeDomoSubmit:link,
-.makeDomoSubmit:visited,
-.makeDomoSubmit:hover,
-.makeDomoSubmit:active {
+.makeIngredientSubmit:link,
+.makeIngredientSubmit:visited,
+.makeIngredientSubmit:hover,
+.makeIngredientSubmit:active {
     color: white;
 }
 
-.makeDomoSubmit:hover {
+.makeIngredientSubmit:hover {
     transition: background-color 0.4s ease;
     background-color: #338acc;
 }
@@ -162,7 +162,7 @@ nav:nth-child(1) {
     display: none;
 }
 
-#domoMessage {
+#ingredientMessage {
     top: 250px;
     width: 250px;
     height: 650px;
@@ -172,7 +172,7 @@ nav:nth-child(1) {
     overflow: hidden;
 }
 
-#domoMessage h3 {
+#ingredientMessage h3 {
     width: 200px;
     position: absolute;
     top: 0px;
@@ -192,7 +192,7 @@ nav:nth-child(1) {
     font-style: italic;
 }
 
-#domo {
+#ingredient {
     z-index: 225;
     margin-top: -20px;
     margin-left: 135px;
@@ -203,7 +203,7 @@ nav:nth-child(1) {
     transform: rotate(330deg);
 }
 
-#domos {
+#ingredients {
     width: 40%;
     min-width: 400px;
     border: 2px solid #55acee;
@@ -212,7 +212,7 @@ nav:nth-child(1) {
     margin-top: 100px;
 }
 
-.domo {
+.ingredient {
     width: 95%;
     margin: 0 auto;
     margin-top: 2px;
@@ -225,14 +225,14 @@ nav:nth-child(1) {
     overflow: hidden;
 }
 
-.domo:hover {
+.ingredient:hover {
     transition: border-color 0.2s ease-out;
     border-color: rgba(255, 255, 255, 0.8);
     transition: background-color 2.6s ease-out;
     background-color: #66bfff;
 }
 
-img.domoFace {
+img.ingredientFace {
     margin-left: 25px;
     margin-right: 10px;
     height: 50px;
@@ -242,7 +242,7 @@ img.domoFace {
     float: left;
 }
 
-h3.emptyDomo {
+h3.emptyIngredient {
     width: 400px;
     font-size: 1.5em;
     margin: 0 auto;
@@ -250,7 +250,7 @@ h3.emptyDomo {
     margin-top: 18px;
 }
 
-h3.domoName {
+h3.ingredientName {
     float: left;
     width: 200px;
     font-weight: bold;
@@ -258,7 +258,7 @@ h3.domoName {
     font-size: 1.5em;
 }
 
-h3.domoAge h3.domoLevel {
+h3.ingredientAge h3.ingredientLevel {
     float: right;
     text-align: left;
     width: 100px;
@@ -267,10 +267,10 @@ h3.domoAge h3.domoLevel {
     font-size: 1.5em;
 }
 
-.domo:first-child {
+.ingredient:first-child {
     margin-top: 10px;
 }
 
-.domo:last-child {
+.ingredient:last-child {
     margin-bottom: 10px;
 }

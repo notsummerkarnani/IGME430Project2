@@ -1,99 +1,123 @@
 const helper = require('./helper.js');
 
-const handleDomo = (e) => {
+const handleIngredient = (e) => {
     e.preventDefault();
     helper.hideError();
 
-    const name = e.target.querySelector('#domoName').value;
-    const age = e.target.querySelector('#domoAge').value;
-    const level = e.target.querySelector('#domoLevel').value;
+    const name = e.target.querySelector('#ingredientName').value;
+    const category = e.target.querySelector('#ingredientCategory').value;
+    const quantity = e.target.querySelector('#ingredientQuantity').value;
+    const measurement = e.target.querySelector('#ingredientMeasurement').value;
     const _csrf = e.target.querySelector('#_csrf').value;
 
-    if (!name || !age || !level) {
+    if (!name || !category || !quantity) {
         helper.handleError('All fields are required!');
         return false;
     }
 
-    helper.sendPost(e.target.action, { name, age,level, _csrf },loadDomosFromServer);
+    helper.sendPost(e.target.action, { name, category,quantity, measurement, _csrf },loadIngredientsFromServer);
     return false;
 }
 
-const clearDomo = async(e)=>{
+const clearIngredient = async(e)=>{
     e.preventDefault();
     helper.hideError();
 
     await fetch(e.target.action);
-    loadDomosFromServer();
+    loadIngredientsFromServer();
 }
 
-const DomoForm = (props) => {
+const IngredientForm = (props) => {
     return (
-        <form id="domoForm"
-            name="domoForm"
-            onSubmit={handleDomo}
+        <form id="ingredientForm"
+            name="ingredientForm"
+            onSubmit={handleIngredient}
             action="/maker"
             method="POST"
-            className="domoForm">
+            className="ingredientForm">
 
             <label htmlFor="name">Name: </label>
-            <input id="domoName" type="text" name="name" placeholder="Domo Name" />
-            <label htmlFor="age">Age: </label>
-            <input id="domoAge" type="number" min="0" name="age" />
+            <input id="ingredientName" type="text" name="name" placeholder="Ingredient Name" />
+            <label htmlFor="category">Category: </label>
+            <select name="ingredientCategory" id="ingredientCategory" defaultValue="miscellaneous">
+                <option value='canned goods'>canned goods</option>
+                <option value='condiments'>condiments</option>
+                <option value='produce'>produce</option>
+                <option value='meats'>meats</option>
+                <option value='dairy'>dairy</option>
+                <option value='breakfast'>breakfast</option>
+                <option value='pasta and rice'>pasta and rice</option>
+                <option value='microwave'>microwave</option>
+                <option value='beverages'>beverages</option>
+                <option value='bakery'>bakery</option>
+                <option value='oils'>oils</option>
+                <option value='miscellaneous'>miscellaneous</option>
+            </select>
         
-            <label htmlFor="level">Level: </label>
-            <input id="domoLevel" type="number" min="0" name="level" />
+            <label htmlFor="quantity">Quantity: </label>
+            <input id="ingredientQuantity" type="number" min="0" name="quantity" />
+
+            <label htmlFor="measurement">Measurement: </label>
+            <select name="ingredientMeasurement" id="ingredientMeasurement">
+                <option value="cups">cups</option>
+                <option value="fl oz">fluid ounces</option>
+                <option value="grams">grams</option>
+                <option value="lbs">lbs</option>
+                <option value="units">units</option>
+                <option value="bunch">bunch</option>
+            </select>
 
             <input id="_csrf" type="hidden" name="_csrf" value={props.csrf} />
 
-            <input className="makeDomoSubmit" type="submit" value="Make Domo" />
+            <input className="makeIngredientSubmit" type="submit" value="Make Ingredient" />
         </form>
     );
 }
 
-const DomoList = (props) => {
-    if (props.domos.length === 0) {
+const IngredientList = (props) => {
+    if (props.ingredients.length === 0) {
         return (
-            <div className="domoList">
-                <h3 className="emptyDomo">No Domos yet!</h3>
+            <div className="ingredientList">
+                <h3 className="emptyIngredient">No Ingredients yet!</h3>
             </div>
         );
     }
 
-    const domoNodes = props.domos.map(domo => {
+    const ingredientNodes = props.ingredients.map(ingredient => {
         return (
-            <div key={domo._id} className="domo">
-                <img src="/assets/img/domoface.jpeg" alt="domo face" className="domoFace" />
-                <h3 className="domoName">Name:{domo.name}</h3>
-                <h3 className="domoAge">Age:{domo.age}</h3>
-                <h3 className="domoLevel">Level:{domo.level}</h3>
+            <div key={ingredient._id} className="ingredient">
+                <h3 className="ingredientName">Name:{ingredient.name}</h3>
+                <h3 className="ingredientCategory">Category:{ingredient.category}</h3>
+                <h3 className="ingredientQuantity">Quantity:{ingredient.quantity}</h3>
+                <h3 className="ingredientMeasurement">Measurement:{ingredient.measurement}</h3>
             </div>
         );
     });
 
     return (
-        <div className="domoList">
-            <form id="domoClearer"
-                name="domoClearer"
-                action="/clearDomos"
-                onSubmit={clearDomo}
+        <div className="ingredientList">
+            <form id="ingredientClearer"
+                name="ingredientClearer"
+                action="/clearIngredients"
+                onSubmit={clearIngredient}
                 method="POST"
-                className="domoForm">
+                className="ingredientForm">
 
-                <input className="deleteDomoSubmit" type="submit" value="Clear Domos" />
+                <input className="deleteIngredientSubmit" type="submit" value="Clear Ingredients" />
 
             </form>
 
-            {domoNodes}
+            {ingredientNodes}
         </div>
     );
 }
 
-const loadDomosFromServer = async()=>{
-    const response = await fetch('/getDomos');
+const loadIngredientsFromServer = async()=>{
+    const response = await fetch('/getIngredients');
     const data = await response.json();
     ReactDOM.render(
-        <DomoList domos={data.domos}/>,
-        document.getElementById('domos')
+        <IngredientList ingredients={data.ingredients}/>,
+        document.getElementById('ingredients')
     );
 }
 
@@ -102,16 +126,16 @@ const init = async()=>{
     const data = await response.json();
 
     ReactDOM.render(
-        <DomoForm csrf={data.csrfToken}/>,
-        document.getElementById('makeDomo')
+        <IngredientForm csrf={data.csrfToken}/>,
+        document.getElementById('makeIngredient')
     );
 
     ReactDOM.render(
-        <DomoList domos={[]}/>,
-        document.getElementById('domos')
+        <IngredientList ingredients={[]}/>,
+        document.getElementById('ingredients')
     );
 
-    loadDomosFromServer();
+    loadIngredientsFromServer();
 }
 
 window.onload=init;
