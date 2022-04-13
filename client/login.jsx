@@ -1,5 +1,18 @@
 const helper = require('./helper.js');
 
+const navLinks = [
+    {
+        name: 'login',
+        href: '/login',
+        id: 'loginButton'
+    },
+    {
+        name: 'signup',
+        href: '/signup',
+        id: 'signupButton'
+    }
+]
+
 const handleLogin = (e) => {
     e.preventDefault();
     helper.hideError();
@@ -37,6 +50,22 @@ const handleSignup = (e) => {
     helper.sendPost(e.target.action, { username, pass, pass2, _csrf });
     return false;
 }
+
+
+const NavBar = (props)=>{
+    const navNodes = props.links.map(link=>{
+    return(
+        <div className="navlink"><a id={link.id} href={link.href}>{link.name}</a></div>
+    )
+    });
+
+    return(
+        <nav id="navbar">
+            {navNodes}
+        </nav>
+    )
+}
+
 
 //Since this is a simple component that will not update when the user
 //types into it, we will make a “functional stateless component” or FSC
@@ -86,6 +115,9 @@ const SignupWindow = (props) => {
 const init = async () => {
     const response = await fetch('/getToken');
     const data = await response.json();
+
+    ReactDOM.render(<NavBar links={navLinks}/>, 
+    document.getElementById('nav'));
 
     const loginButton = document.getElementById('loginButton');
     const signupButton = document.getElementById('signupButton');
