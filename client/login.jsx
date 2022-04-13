@@ -2,16 +2,16 @@ const helper = require('./helper.js');
 
 const navLinks = [
     {
-        name: 'login',
+        name: 'Login',
         href: '/login',
         id: 'loginButton'
     },
     {
-        name: 'signup',
+        name: 'Sign Up',
         href: '/signup',
         id: 'signupButton'
     }
-]
+];
 
 const handleLogin = (e) => {
     e.preventDefault();
@@ -53,9 +53,9 @@ const handleSignup = (e) => {
 
 
 const NavBar = (props)=>{
-    const navNodes = props.links.map(link=>{
+    const navNodes = props.links.map((link, index)=>{
     return(
-        <div className="navlink"><a id={link.id} href={link.href}>{link.name}</a></div>
+        <div key={index} className="navlink"><a id={link.id} href={link.href}>{link.name}</a></div>
     )
     });
 
