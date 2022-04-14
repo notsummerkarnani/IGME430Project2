@@ -49,6 +49,30 @@ const clearIngredient = async(e)=>{
     loadIngredientsFromServer();
 }
 
+const deleteIngredient = (e)=>{
+    e.preventDefault();
+    helper.hideError();
+
+    const _csrf = document.querySelector('#_csrf').value;
+
+    helper.sendPost(e.target.action, {'id':e.target.parentElement.id, _csrf}, (res)=>{
+        console.log("hit"+res);
+    })
+    // const bodyData = `id=${e.target.parentElement.id}`;
+
+    // let response = await fetch(e.target.action, {
+    //     method: 'POST',
+    //     headers: {
+    //         'Content-Type': 'application/x-www-form-urlencoded',
+    //         'Accept': 'application/json',
+    //     },
+    //     body: bodyData,
+    // });
+
+    console.log("response: ");
+    //loadIngredientsFromServer();
+}
+
 const IngredientForm = (props) => {
     return (
         <form id="ingredientForm"
@@ -107,7 +131,16 @@ const IngredientList = (props) => {
 
     const ingredientNodes = props.ingredients.map(ingredient => {
         return (
-            <div key={ingredient._id} className="ingredient">
+            <div key={ingredient._id} id={ingredient._id} className="ingredient">
+                <form action="/deleteIngredient"
+                    name="deleteIngredientForm"
+                    id="deleteIngredientForm"
+                    method="POST"
+                    className="ingredientForm"
+                    onSubmit={deleteIngredient}>
+
+                    <input type="submit" name="deleteIngredientSubmit" id="deleteIngredientSubmit" value=" X " />
+                </form>
                 <h3 className="ingredientName">Name:{ingredient.name}</h3>
                 <h3 className="ingredientCategory">Category:{ingredient.category}</h3>
                 <h3 className="ingredientQuantity">Quantity:{ingredient.quantity}</h3>
@@ -118,6 +151,7 @@ const IngredientList = (props) => {
 
     return (
         <div className="ingredientList">
+
             <form id="ingredientClearer"
                 name="ingredientClearer"
                 action="/clearIngredients"
@@ -125,7 +159,7 @@ const IngredientList = (props) => {
                 method="POST"
                 className="ingredientForm">
 
-                <input className="deleteIngredientSubmit" type="submit" value="Clear Ingredients" />
+                <input className="clearIngredientsSubmit" type="submit" value="Clear Ingredients" />
 
             </form>
 
@@ -156,7 +190,7 @@ const init = async()=>{
     );
 
     ReactDOM.render(
-        <IngredientList ingredients={[]}/>,
+        <IngredientList csrf={data.csrfToken} ingredients={[]}/>,
         document.getElementById('ingredients')
     );
 
