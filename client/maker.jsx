@@ -55,10 +55,7 @@ const deleteIngredient = (e)=>{
 
     const _csrf = document.querySelector('#_csrf').value;
 
-    helper.sendPost(e.target.action, {'_id':e.target.parentElement.id, _csrf}, loadIngredientsFromServer)
-
-    console.log("response: ");
-    //loadIngredientsFromServer();
+    helper.sendPost(e.target.action, {'_id':e.target.parentElement.id, _csrf}, loadIngredientsFromServer);
 }
 
 const IngredientForm = (props) => {
@@ -91,7 +88,6 @@ const IngredientForm = (props) => {
             <label htmlFor="quantity">Quantity: </label>
             <input id="ingredientQuantity" type="number" min="0" name="quantity" />
 
-            <label htmlFor="measurement">Measurement: </label>
             <select name="ingredientMeasurement" id="ingredientMeasurement">
                 <option value="cups">cups</option>
                 <option value="fl oz">fluid ounces</option>
@@ -109,6 +105,8 @@ const IngredientForm = (props) => {
 }
 
 const IngredientList = (props) => {
+
+
     if (props.ingredients.length === 0) {
         return (
             <div className="ingredientList">

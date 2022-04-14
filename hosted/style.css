@@ -71,6 +71,12 @@ nav:nth-child(1) {
     color: white;
 }
 
+.ingredientForm select {
+    display: inline-block;
+    margin-left: 10px;
+    font-size: 1.2em;
+}
+
 .makeIngredientSubmit {
     transition: background-color 0.4s ease;
     display: inline;
