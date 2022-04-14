@@ -12,6 +12,7 @@ const IngredientSchema = new mongoose.Schema({
         required: true,
         trim: true,
         set: setName,
+        unique: true
     },
     category: {
         type: String,
@@ -64,6 +65,7 @@ IngredientSchema.statics.findByOwnerAndDelete = (ownerId, callback) => {
 };
 
 IngredientSchema.statics.findByIDandDelete = (ingredientID, callback) => {
+    console.log(ingredientID);
     const search = {
         id: mongoose.Types.ObjectId(ingredientID),
     };

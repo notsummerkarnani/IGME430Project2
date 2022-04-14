@@ -54,10 +54,9 @@ const clearIngredients = (req, res) => {
 };
 
 const deleteIngredient = (req, res) => {
-    console.log("hit " + JSON.parse(req));
+    console.log(req.body._id);
 
-
-    IngredientModel.findByIDandDelete(req.session.account._id, (err, docs) => {
+    IngredientModel.findByIDandDelete(req.body._id, (err, docs) => {
         if (err) {
             console.log(err);
             return res.status(400).json({ error: 'An error occured!' });

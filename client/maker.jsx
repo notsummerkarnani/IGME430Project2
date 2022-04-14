@@ -55,19 +55,7 @@ const deleteIngredient = (e)=>{
 
     const _csrf = document.querySelector('#_csrf').value;
 
-    helper.sendPost(e.target.action, {'id':e.target.parentElement.id, _csrf}, (res)=>{
-        console.log("hit"+res);
-    })
-    // const bodyData = `id=${e.target.parentElement.id}`;
-
-    // let response = await fetch(e.target.action, {
-    //     method: 'POST',
-    //     headers: {
-    //         'Content-Type': 'application/x-www-form-urlencoded',
-    //         'Accept': 'application/json',
-    //     },
-    //     body: bodyData,
-    // });
+    helper.sendPost(e.target.action, {'_id':e.target.parentElement.id, _csrf}, loadIngredientsFromServer)
 
     console.log("response: ");
     //loadIngredientsFromServer();
