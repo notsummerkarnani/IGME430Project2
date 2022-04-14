@@ -127,10 +127,9 @@ const IngredientList = (props) => {
 
                     <input type="submit" name="deleteIngredientSubmit" id="deleteIngredientSubmit" value=" X " />
                 </form>
-                <h3 className="ingredientName">Name:{ingredient.name}</h3>
+                <h3 className="ingredientName">{ingredient.name}</h3>
                 <h3 className="ingredientCategory">Category:{ingredient.category}</h3>
-                <h3 className="ingredientQuantity">Quantity:{ingredient.quantity}</h3>
-                <h3 className="ingredientMeasurement">Measurement:{ingredient.measurement}</h3>
+                <h3 className="ingredientQuantity">Quantity:{ingredient.quantity} {ingredient.measurement}</h3>
             </div>
         );
     });

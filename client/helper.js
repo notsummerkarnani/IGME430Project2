@@ -3,7 +3,7 @@
    end in an error.
 */
 const handleError = (message) => {
-    //document.getElementById('errorMessage').textContent = message;
+    document.getElementById('errorMessage').innerHTML = `<h3>${message}</h3>`;
     //document.getElementById('domoMessage').classList.remove('hidden');
 };
 
