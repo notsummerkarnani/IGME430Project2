@@ -1,0 +1,1 @@
+const makerPage = (req, res) => res.render('recipe');

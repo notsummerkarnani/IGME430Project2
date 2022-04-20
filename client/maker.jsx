@@ -58,6 +58,19 @@ const deleteIngredient = (e)=>{
     helper.sendPost(e.target.action, {'_id':e.target.parentElement.id, _csrf}, loadIngredientsFromServer);
 }
 
+const getRecipe = (e)=>{
+    e.preventDefault();
+    helper.hideError();
+    
+    const _csrf = document.querySelector('#_csrf').value;
+
+    helper.sendPost(e.target.action, {'_id':e.target.parentElement.id, _csrf}, handleRecipe);
+}
+
+const handleRecipe = (e)=>{
+    console.log(e);
+}
+
 const IngredientForm = (props) => {
     return (
         <form id="ingredientForm"
@@ -127,6 +140,17 @@ const IngredientList = (props) => {
 
                     <input type="submit" name="deleteIngredientSubmit" id="deleteIngredientSubmit" value=" X " />
                 </form>
+
+                <form id="recipeFinder"
+                    name="recipeFinder"
+                    action="/findRecipe"
+                    onSubmit={getRecipe}
+                    method="POST"
+                    className="ingredientForm">
+
+                    <input className="findRecipeButton" type="submit" value="Find Recipes" />
+                </form>
+                
                 <h3 className="ingredientName">{ingredient.name}</h3>
                 <h3 className="ingredientCategory">Category:{ingredient.category}</h3>
                 <h3 className="ingredientQuantity">Quantity:{ingredient.quantity} {ingredient.measurement}</h3>
@@ -145,7 +169,6 @@ const IngredientList = (props) => {
                 className="ingredientForm">
 
                 <input className="clearIngredientsSubmit" type="submit" value="Clear Ingredients" />
-
             </form>
 
             {ingredientNodes}
