@@ -2,6 +2,11 @@ const helper = require('./helper.js');
 
 const navLinks = [
     {
+        name: 'Search Recipes',
+        href: '/recipePage',
+        id: 'recipePageButton'
+    },
+    {
         name: 'Logout',
         href: '/logout',
         id: 'logoutButton'
@@ -118,8 +123,6 @@ const IngredientForm = (props) => {
 }
 
 const IngredientList = (props) => {
-
-
     if (props.ingredients.length === 0) {
         return (
             <div className="ingredientList">

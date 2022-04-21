@@ -8,7 +8,9 @@ const router = (app) => {
 
   app.post('/deleteIngredient', mid.requiresLogin, controllers.Ingredient.deleteIngredient);
 
+  app.get('/recipePage', mid.requiresLogin, controllers.Recipe.recipePage);
   app.post('/findRecipe', mid.requiresLogin, controllers.Ingredient.findRecipe);
+  app.post('/searchRecipe', mid.requiresLogin, controllers.Recipe.searchRecipe);
 
   app.get('/login', mid.requiresSecure, mid.requiresLogout, controllers.Account.loginPage);
   app.post('/login', mid.requiresSecure, mid.requiresLogout, controllers.Account.login);
