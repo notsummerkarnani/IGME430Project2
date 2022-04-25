@@ -13,6 +13,7 @@ const navLinks = [
     }
 ];
 
+//start of react components
 const NavBar = (props)=>{
     const navNodes = props.links.map((link, index)=>{
     return(
@@ -65,59 +66,6 @@ const RecipeList = (props)=>{
         <div className="recipeList">
             {recipeNodes}
         </div>
-    );
-}
-
-const handleIngredient = (e) => {
-    e.preventDefault();
-    helper.hideError();
-
-    const name = e.target.querySelector('#ingredientName').value;
-    const category = e.target.querySelector('#ingredientCategory').value;
-    const quantity = e.target.querySelector('#ingredientQuantity').value;
-    const measurement = e.target.querySelector('#ingredientMeasurement').value;
-    const _csrf = e.target.querySelector('#_csrf').value;
-
-    if (!name || !category || !quantity) {
-        helper.handleError('All fields are required!');
-        return false;
-    }
-
-    helper.sendPost(e.target.action, { name, category,quantity, measurement, _csrf },loadIngredientsFromServer);
-    return false;
-}
-
-const clearIngredient = async(e)=>{
-    e.preventDefault();
-    helper.hideError();
-
-    await fetch(e.target.action);
-    loadIngredientsFromServer();
-}
-
-const deleteIngredient = (e)=>{
-    e.preventDefault();
-    helper.hideError();
-
-    const _csrf = document.querySelector('#_csrf').value;
-
-    helper.sendPost(e.target.action, {'_id':e.target.parentElement.id, _csrf}, loadIngredientsFromServer);
-}
-
-const getRecipe = (e)=>{
-    e.preventDefault();
-    helper.hideError();
-    
-    const _csrf = document.querySelector('#_csrf').value;
-
-    helper.sendPost(e.target.action, {'_id':e.target.parentElement.id, _csrf}, handleRecipe);
-}
-
-const handleRecipe = (e)=>{
-    //console.log(e);
-    ReactDOM.render(
-        <RecipeList meals={e}/>,
-        document.getElementById(e[0]._id).getElementsByClassName('IngredientRecipes')[0]
     );
 }
 
@@ -222,6 +170,61 @@ const IngredientList = (props) => {
 
             {ingredientNodes}
         </div>
+    );
+}
+//end of react components
+
+
+const handleIngredient = (e) => {
+    e.preventDefault();
+    helper.hideError();
+
+    const name = e.target.querySelector('#ingredientName').value;
+    const category = e.target.querySelector('#ingredientCategory').value;
+    const quantity = e.target.querySelector('#ingredientQuantity').value;
+    const measurement = e.target.querySelector('#ingredientMeasurement').value;
+    const _csrf = e.target.querySelector('#_csrf').value;
+
+    if (!name || !category || !quantity) {
+        helper.handleError('All fields are required!');
+        return false;
+    }
+
+    helper.sendPost(e.target.action, { name, category,quantity, measurement, _csrf },loadIngredientsFromServer);
+    return false;
+}
+
+const clearIngredient = async(e)=>{
+    e.preventDefault();
+    helper.hideError();
+
+    await fetch(e.target.action);
+    loadIngredientsFromServer();
+}
+
+const deleteIngredient = (e)=>{
+    e.preventDefault();
+    helper.hideError();
+
+    const _csrf = document.querySelector('#_csrf').value;
+
+    helper.sendPost(e.target.action, {'_id':e.target.parentElement.id, _csrf}, loadIngredientsFromServer);
+}
+
+const getRecipe = (e)=>{
+    e.preventDefault();
+    helper.hideError();
+    
+    const _csrf = document.querySelector('#_csrf').value;
+
+    helper.sendPost(e.target.action, {'_id':e.target.parentElement.id, _csrf}, handleRecipe);
+}
+
+const handleRecipe = (e)=>{
+    //console.log(e);
+    ReactDOM.render(
+        <RecipeList meals={e}/>,
+        document.getElementById(e[0]._id).getElementsByClassName('IngredientRecipes')[0]
     );
 }
 

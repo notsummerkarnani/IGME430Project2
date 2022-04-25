@@ -13,6 +13,7 @@ const navLinks = [
     }
 ];
 
+//Start of react components
 const NavBar = (props)=>{
     const navNodes = props.links.map((link, index)=>{
     return(
@@ -86,6 +87,7 @@ const RecipeList = (props)=>{
         </div>
     );
 }
+//end of react components
 
 const searchRecipes = (e)=>{
     e.preventDefault();

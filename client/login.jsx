@@ -51,7 +51,6 @@ const handleSignup = (e) => {
     return false;
 }
 
-
 const NavBar = (props)=>{
     const navNodes = props.links.map((link, index)=>{
     return(
@@ -65,7 +64,6 @@ const NavBar = (props)=>{
         </nav>
     )
 }
-
 
 //Since this is a simple component that will not update when the user
 //types into it, we will make a “functional stateless component” or FSC
