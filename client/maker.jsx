@@ -114,6 +114,7 @@ const getRecipe = (e)=>{
 }
 
 const handleRecipe = (e)=>{
+    //console.log(e);
     ReactDOM.render(
         <RecipeList meals={e}/>,
         document.getElementById(e[0]._id).getElementsByClassName('IngredientRecipes')[0]

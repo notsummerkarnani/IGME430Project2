@@ -17,7 +17,7 @@ const searchRecipe = async(req, res) => {
 
                     // format ingredients and measurements into an array
                     for (let i = 0; i < 20; i++) {
-                        if (meal[`strIngredient${i + 1}`] !== null && meal[`strMeasure${i + 1}`] !== null) {
+                        if (meal[`strIngredient${i + 1}`] && meal[`strMeasure${i + 1}`]) {
                             ingredients.push(`${meal[`strMeasure${i + 1}`]} ${meal[`strIngredient${i + 1}`]}`);
         }
     }

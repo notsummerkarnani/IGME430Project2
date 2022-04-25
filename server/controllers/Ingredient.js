@@ -53,42 +53,52 @@ const findRecipe = async(req, res) => {
                         return res.status(400).json({ error: 'An error occured!' });
                     }
 
+                    const mealJSON = [];
+
                     const url = new URL(`https://www.themealdb.com/api/json/v1/1/filter.php?i=${docs[0].name}`);
 
                     const response = await nodeFetch(url);
                     const jsonData = await response.json();
 
-                    const mealJSON = [];
 
                     if (jsonData.meals === null) {
                         return res.status(400).json({ error: 'No recipes found' });
                     }
-                    jsonData.meals.map((meal) => {
-                                const ingredients = [];
 
-                                // format ingredients and measurements into an array
-                                for (let i = 0; i < 20; i++) {
-                                    if (meal[`strIngredient${i + 1}`] !== null && meal[`strMeasure${i + 1}`] !== null) {
-                                        ingredients.push(`${meal[`strMeasure${i + 1}`]} ${meal[`strIngredient${i + 1}`]}`);
+
+                    for (const meal of jsonData.meals) {
+
+                        const url2 = new URL(`https://www.themealdb.com/api/json/v1/1/lookup.php?i=${meal.idMeal}`);
+
+                        const response2 = await nodeFetch(url2);
+                        const jsonData2 = await response2.json();
+
+                        const ingredients = [];
+
+                        // format ingredients and measurements into an array
+                        for (let i = 0; i < 20; i++) {
+                            if (jsonData2.meals[0][`strIngredient${i + 1}`] && jsonData2.meals[0][`strMeasure${i + 1}`]) {
+                                ingredients.push(`${jsonData2.meals[0][`strMeasure${i + 1}`]} ${jsonData2.meals[0][`strIngredient${i + 1}`]}`);
         }
     }
 
-    // add data to object we are returning
+    //add data to object we are returning
     mealJSON.push({
-      name: meal.strMeal,
-      category: meal.strCategory,
+      name: jsonData2.meals[0].strMeal,
+      category: jsonData2.meals[0].strCategory,
       ingredients,
-      instructions: meal.strInstructions,
-      thumbnail: meal.strMealThumb,
-      youtube: meal.strYoutube,
-      id: meal.idMeal,
+      instructions: jsonData2.meals[0].strInstructions,
+      thumbnail: jsonData2.meals[0].strMealThumb,
+      youtube: jsonData2.meals[0].strYoutube,
+      id: jsonData2.meals[0].idMeal,
       _id: req.body._id
     });
+                      
+                    
+  }
 
-    return 0;
-    });
     return res.status(200).json(mealJSON);
-  });
+    });
 };
 
 const clearIngredients = (req, res) => {
