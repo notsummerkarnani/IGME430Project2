@@ -13,49 +13,44 @@ const redis = require('redis');
 const csrf = require('csurf');
 
 const router = require('./router.js');
+const config = require('./config.js');
 
-const port = process.env.PORT || process.env.NODE_PORT || 3000;
-const dbURI = process.env.MONGODB_URI || 'mongodb://127.0.0.1/Project2';
-
-mongoose.connect(dbURI, (err) => {
-  if (err) {
-    console.log('could not connect to database');
-    throw err;
-  }
+mongoose.connect(config.connections.mongo, (err) => {
+    if (err) {
+        console.log('could not connect to database');
+        throw err;
+    }
 });
 
-const redisURL = process.env.REDISCLOUD_URL
-    || 'redis://default:1if1LWc5GkPasgiBdYQqhE6FTXjbDSf7@redis-19649.c82.us-east-1-2.ec2.cloud.redislabs.com:19649';
-
 const redisClient = redis.createClient({
-  legacyMode: true,
-  url: redisURL,
+    legacyMode: true,
+    url: config.connections.redis,
 });
 redisClient.connect().catch(console.error);
 
 const app = express();
 app.use(helmet({
-  crossOriginEmbedderPolicy: false,
-  contentSecurityPolicy: false,
+    crossOriginEmbedderPolicy: false,
+    contentSecurityPolicy: false,
 }));
 
-app.use('/assets', express.static(path.resolve(`${__dirname}/../hosted/`)));
-app.use(favicon(`${__dirname}/../hosted/img/favicon.png`));
+app.use('/assets', express.static(path.resolve(config.staticAssets.path)));
+app.use(favicon(`${config.staticAssets.path}/img/favicon.png`));
 app.use(compression());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 app.use(session({
-  key: 'sessionid',
-  store: new RedisStore({
-    client: redisClient,
-  }),
-  secret: 'Austin is cool',
-  resave: true,
-  saveUninitialized: true,
-  cookie: {
-    httpOnly: true,
-  },
+    key: 'sessionid',
+    store: new RedisStore({
+        client: redisClient,
+    }),
+    secret: config.secret,
+    resave: true,
+    saveUninitialized: true,
+    cookie: {
+        httpOnly: true,
+    },
 }));
 
 app.engine('handlebars', expressHandlebars.engine({ defaultLayout: '' }));
@@ -65,16 +60,16 @@ app.use(cookieParser());
 
 app.use(csrf());
 app.use((err, req, res, next) => {
-  if (err.code !== 'EBADCSRFTOKEN') {
-    return next(err);
-  }
-  console.log('Missin CSRF token!');
-  return false;
+    if (err.code !== 'EBADCSRFTOKEN') {
+        return next(err);
+    }
+    console.log('Missin CSRF token!');
+    return false;
 });
 
 router(app);
 
-app.listen(port, (err) => {
-  if (err) { throw err; }
-  console.log(`Listening on port ${port}`);
+app.listen(config.connections.http.port, (err) => {
+    if (err) { throw err; }
+    console.log(`Listening on port ${config.connections.http.port}`);
 });

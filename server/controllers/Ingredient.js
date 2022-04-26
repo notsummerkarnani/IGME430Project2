@@ -1,6 +1,8 @@
 const nodeFetch = require('node-fetch');
 const models = require('../models');
 const IngredientModel = require('../models/Ingredient');
+const config = require('../config.js');
+
 
 const { Ingredient } = models;
 
@@ -55,7 +57,7 @@ const findRecipe = async(req, res) => {
 
                     const mealJSON = [];
 
-                    const url = new URL(`https://www.themealdb.com/api/json/v1/1/filter.php?i=${docs[0].name}`);
+                    const url = new URL(config.connections.ingredientEndpoint + docs[0].name);
 
                     const response = await nodeFetch(url);
                     const jsonData = await response.json();
@@ -67,7 +69,7 @@ const findRecipe = async(req, res) => {
                     const urls = [];
 
                     jsonData.meals.map((meal) => {
-                        urls.push(new URL(`https://www.themealdb.com/api/json/v1/1/lookup.php?i=${meal.idMeal}`));
+                        urls.push(new URL(config.connections.idEndpoint + meal.idMeal));
                         return 0;
                     });
 
