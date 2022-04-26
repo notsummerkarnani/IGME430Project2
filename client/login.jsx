@@ -10,6 +10,11 @@ const navLinks = [
         name: 'Sign Up',
         href: '/signup',
         id: 'signupButton'
+    },
+    {
+        name: 'Change Password',
+        href: '/changePass',
+        id: 'changePassButton'
     }
 ];
 
@@ -45,6 +50,27 @@ const handleSignup = (e) => {
     }
     if (pass !== pass2) {
         helper.handleError('Passwords do not match!');
+        return false;
+    }
+    helper.sendPost(e.target.action, { username, pass, pass2, _csrf });
+    return false;
+}
+
+const handleChangePass = (e)=>{
+    e.preventDefault();
+    helper.hideError();
+
+    const username = e.target.querySelector('#user').value;
+    const pass = e.target.querySelector('#pass').value;
+    const pass2 = e.target.querySelector('#pass2').value;
+    const _csrf = e.target.querySelector('#_csrf').value;
+
+    if (!username || !pass || !pass2) {
+        helper.handleError('All fields are required');
+        return false;
+    }
+    if (pass === pass2) {
+        helper.handleError('New password cannot be same as current password!');
         return false;
     }
     helper.sendPost(e.target.action, { username, pass, pass2, _csrf });
@@ -110,6 +136,29 @@ const SignupWindow = (props) => {
     );
 };
 
+const ChangePassForm = (props) => {
+    return (
+
+        <form id="changePassForm"
+            name="changePassForm"
+            onSubmit={handleChangePass}
+            action="/changePass"
+            method="POST"
+            className="mainForm"
+        >
+            <label htmlFor="username">Username: </label>
+            <input id="user" type="text" name="username" placeholder="username" />
+            <label htmlFor="pass">Current Password: </label>
+            <input id="pass" type="password" name="pass" placeholder="current password" />
+            <label htmlFor="pass2">New Password: </label>
+            <input id="pass2" type="password" name="pass2" placeholder="new password" />
+            <input id="_csrf" type="hidden" name="_csrf" value={props.csrf} />
+            <input className="formSubmit" type="submit" value="Change Password" />
+
+        </form>
+    );
+};
+
 const init = async () => {
     const response = await fetch('/getToken');
     const data = await response.json();
@@ -119,6 +168,8 @@ const init = async () => {
 
     const loginButton = document.getElementById('loginButton');
     const signupButton = document.getElementById('signupButton');
+    const changePassButton = document.getElementById('changePassButton');
+
 
     loginButton.addEventListener('click',(e)=>{
         e.preventDefault();
@@ -130,6 +181,13 @@ const init = async () => {
     signupButton.addEventListener('click',(e)=>{
         e.preventDefault();
         ReactDOM.render(<SignupWindow csrf={data.csrfToken} />,
+            document.getElementById('content'));
+        return false;
+    });
+
+    changePassButton.addEventListener('click',(e)=>{
+        e.preventDefault();
+        ReactDOM.render(<ChangePassForm csrf={data.csrfToken} />,
             document.getElementById('content'));
         return false;
     });

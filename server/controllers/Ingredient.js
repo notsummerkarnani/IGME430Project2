@@ -50,7 +50,7 @@ const findRecipe = async(req, res) => {
         IngredientModel.findByID(req.body._id, async(err, docs) => {
                     if (err) {
                         console.log(err);
-                        return res.status(400).json({ error: 'An error occured!' });
+                        return res.status(400).json({ error: err });
                     }
 
                     const mealJSON = [];
@@ -60,14 +60,11 @@ const findRecipe = async(req, res) => {
                     const response = await nodeFetch(url);
                     const jsonData = await response.json();
 
-
                     if (jsonData.meals === null) {
                         return res.status(400).json({ error: 'No recipes found' });
                     }
 
-
                     for (const meal of jsonData.meals) {
-
                         const url2 = new URL(`https://www.themealdb.com/api/json/v1/1/lookup.php?i=${meal.idMeal}`);
 
                         const response2 = await nodeFetch(url2);
@@ -80,32 +77,29 @@ const findRecipe = async(req, res) => {
                             if (jsonData2.meals[0][`strIngredient${i + 1}`] && jsonData2.meals[0][`strMeasure${i + 1}`]) {
                                 ingredients.push(`${jsonData2.meals[0][`strMeasure${i + 1}`]} ${jsonData2.meals[0][`strIngredient${i + 1}`]}`);
         }
+      }
+
+      // add data to object we are returning
+      mealJSON.push({
+        name: jsonData2.meals[0].strMeal,
+        category: jsonData2.meals[0].strCategory,
+        ingredients,
+        instructions: jsonData2.meals[0].strInstructions,
+        thumbnail: jsonData2.meals[0].strMealThumb,
+        youtube: jsonData2.meals[0].strYoutube,
+        id: jsonData2.meals[0].idMeal,
+        _id: req.body._id,
+      });
     }
 
-    //add data to object we are returning
-    mealJSON.push({
-      name: jsonData2.meals[0].strMeal,
-      category: jsonData2.meals[0].strCategory,
-      ingredients,
-      instructions: jsonData2.meals[0].strInstructions,
-      thumbnail: jsonData2.meals[0].strMealThumb,
-      youtube: jsonData2.meals[0].strYoutube,
-      id: jsonData2.meals[0].idMeal,
-      _id: req.body._id
-    });
-                      
-                    
-  }
-
     return res.status(200).json(mealJSON);
-    });
+  });
 };
 
 const clearIngredients = (req, res) => {
   IngredientModel.findByOwnerAndDelete(req.session.account._id, (err, docs) => {
     if (err) {
-      console.log(err);
-      return res.status(400).json({ error: 'An error occured!' });
+      return res.status(400).json({ error: err });
     }
     return res.json({ ingredients: docs });
   });
@@ -116,8 +110,7 @@ const deleteIngredient = (req, res) => {
 
   IngredientModel.findByIDandDelete(req.body._id, (err, docs) => {
     if (err) {
-      console.log(err);
-      return res.status(400).json({ error: 'An error occured!' });
+      return res.status(400).json({ error: err });
     }
     return res.json({ ingredients: docs });
   });
