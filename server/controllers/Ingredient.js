@@ -64,33 +64,43 @@ const findRecipe = async(req, res) => {
                         return res.status(400).json({ error: 'No recipes found' });
                     }
 
-                    for (const meal of jsonData.meals) {
-                        const url2 = new URL(`https://www.themealdb.com/api/json/v1/1/lookup.php?i=${meal.idMeal}`);
+                    const urls = [];
 
-                        const response2 = await nodeFetch(url2);
-                        const jsonData2 = await response2.json();
+                    jsonData.meals.map((meal) => {
+                        urls.push(new URL(`https://www.themealdb.com/api/json/v1/1/lookup.php?i=${meal.idMeal}`));
+                        return 0;
+                    });
 
-                        const ingredients = [];
+                    const response2 = await Promise.all(urls.map((u) => nodeFetch(u)));
+                    const jsonData2 = await Promise.all(response2.map((r) => r.json()));
 
-                        // format ingredients and measurements into an array
-                        for (let i = 0; i < 20; i++) {
-                            if (jsonData2.meals[0][`strIngredient${i + 1}`] && jsonData2.meals[0][`strMeasure${i + 1}`]) {
-                                ingredients.push(`${jsonData2.meals[0][`strMeasure${i + 1}`]} ${jsonData2.meals[0][`strIngredient${i + 1}`]}`);
+                    jsonData2.map((obj) => {
+                                const iterator = obj.meals[0];
+
+                                const ingredients = [];
+
+                                // format ingredients and measurements into an array
+                                for (let i = 0; i < 20; i++) {
+                                    if (iterator[`strIngredient${i + 1}`] &&
+                                        iterator[`strMeasure${i + 1}`]) {
+                                        ingredients.push(`${iterator[`strMeasure${i + 1}`]} ${iterator[`strIngredient${i + 1}`]}`);
         }
       }
 
       // add data to object we are returning
       mealJSON.push({
-        name: jsonData2.meals[0].strMeal,
-        category: jsonData2.meals[0].strCategory,
+        name: iterator.strMeal,
+        category: iterator.strCategory,
         ingredients,
-        instructions: jsonData2.meals[0].strInstructions,
-        thumbnail: jsonData2.meals[0].strMealThumb,
-        youtube: jsonData2.meals[0].strYoutube,
-        id: jsonData2.meals[0].idMeal,
+        instructions: iterator.strInstructions,
+        thumbnail: iterator.strMealThumb,
+        youtube: iterator.strYoutube,
+        id: iterator.idMeal,
         _id: req.body._id,
       });
-    }
+
+      return 0;
+    });
 
     return res.status(200).json(mealJSON);
   });
@@ -106,8 +116,6 @@ const clearIngredients = (req, res) => {
 };
 
 const deleteIngredient = (req, res) => {
-  console.log(req.body._id);
-
   IngredientModel.findByIDandDelete(req.body._id, (err, docs) => {
     if (err) {
       return res.status(400).json({ error: err });
