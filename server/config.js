@@ -3,9 +3,13 @@ require('dotenv').config();
 const staticAssets = {
     development: {
         path: 'hosted/',
+        bulma: 'node_modules/bulma/css',
+        fontAwe: 'node_modules/@fortawesome/free-regular-svg-icons',
     },
     production: {
         path: 'hosted/',
+        bulma: 'node_modules/bulma/css',
+        fontAwe: 'node_modules/@fortawesome/free-regular-svg-icons',
     },
 };
 

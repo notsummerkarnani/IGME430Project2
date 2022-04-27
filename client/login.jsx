@@ -79,6 +79,7 @@ const handleChangePass = (e)=>{
     return false;
 }
 
+//components
 const LoginWindow = (props) => {
     return (
 
@@ -144,6 +145,7 @@ const ChangePassForm = (props) => {
         </form>
     );
 };
+//components
 
 const init = async () => {
     const response = await fetch('/getToken');

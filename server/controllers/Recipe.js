@@ -2,21 +2,21 @@ const nodeFetch = require('node-fetch');
 
 const recipePage = (req, res) => res.render('recipe');
 
-const searchRecipe = async(req, res) => {
-        const url = new URL(config.connections.nameEndpoint + req.body.name);
+const searchRecipe = async (req, res) => {
+  const url = new URL(config.connections.nameEndpoint + req.body.name);
 
-        const response = await nodeFetch(url);
-        const jsonData = await response.json();
+  const response = await nodeFetch(url);
+  const jsonData = await response.json();
 
-        const mealJSON = [];
+  const mealJSON = [];
 
-        jsonData.meals.map((meal) => {
-                    const ingredients = [];
+  jsonData.meals.map((meal) => {
+    const ingredients = [];
 
-                    // format ingredients and measurements into an array
-                    for (let i = 0; i < 20; i++) {
-                        if (meal[`strIngredient${i + 1}`] && meal[`strMeasure${i + 1}`]) {
-                            ingredients.push(`${meal[`strMeasure${i + 1}`]} ${meal[`strIngredient${i + 1}`]}`);
+    // format ingredients and measurements into an array
+    for (let i = 0; i < 20; i++) {
+      if (meal[`strIngredient${i + 1}`] && meal[`strMeasure${i + 1}`]) {
+        ingredients.push(`${meal[`strMeasure${i + 1}`]} ${meal[`strIngredient${i + 1}`]}`);
       }
     }
 

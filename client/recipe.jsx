@@ -10,6 +10,11 @@ const navLinks = [
         id: 'makerButton'
     },
     {
+        name: 'Search Recipes',
+        href: '/recipePage',
+        id: 'recipePageButton'
+    },
+    {
         name: 'Logout',
         href: '/logout',
         id: 'logoutButton'

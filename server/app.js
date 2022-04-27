@@ -35,6 +35,9 @@ app.use(helmet({
 }));
 
 app.use('/assets', express.static(path.resolve(config.staticAssets.path)));
+app.use('/bulma', express.static(path.resolve(config.staticAssets.bulma)));
+app.use('/fontAwe', express.static(path.resolve(config.staticAssets.fontAwe)));
+
 app.use(favicon(`${config.staticAssets.path}/img/favicon.png`));
 app.use(compression());
 app.use(bodyParser.urlencoded({ extended: true }));

@@ -5,6 +5,11 @@ const Advertisement = require('./ad.jsx');
 
 const navLinks = [
     {
+        name: 'Pantry',
+        href: '/maker',
+        id: 'makerButton'
+    },
+    {
         name: 'Search Recipes',
         href: '/recipePage',
         id: 'recipePageButton'
