@@ -1,4 +1,7 @@
 const helper = require('./helper.js');
+const NavBar = require('./nav.jsx');
+const Advertisement = require('./ad.jsx');
+
 
 const navLinks = [
     {
@@ -14,20 +17,6 @@ const navLinks = [
 ];
 
 //start of react components
-const NavBar = (props)=>{
-    const navNodes = props.links.map((link, index)=>{
-    return(
-        <div key={index} className="navlink"><a id={link.id} href={link.href}>{link.name}</a></div>
-    )
-    });
-
-    return(
-        <nav id="navbar">
-            {navNodes}
-        </nav>
-    )
-}
-
 const RecipeList = (props)=>{
     console.log(props);
 
@@ -253,6 +242,14 @@ const init = async()=>{
         <IngredientList csrf={data.csrfToken} ingredients={[]}/>,
         document.getElementById('ingredients')
     );
+
+    const advertisementNodes = document.querySelectorAll('#ad');
+    for(let i = 0; i < advertisementNodes.length;i++){
+            ReactDOM.render(
+                <Advertisement href='assets/img/ad.jpeg' alt='placeholder advertisement'/>,
+                advertisementNodes[i]
+            );
+    }
 
     loadIngredientsFromServer();
 }

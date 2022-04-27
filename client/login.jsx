@@ -1,4 +1,6 @@
 const helper = require('./helper.js');
+const NavBar = require('./nav.jsx');
+const Advertisement = require('./ad.jsx');
 
 const navLinks = [
     {
@@ -77,22 +79,6 @@ const handleChangePass = (e)=>{
     return false;
 }
 
-const NavBar = (props)=>{
-    const navNodes = props.links.map((link, index)=>{
-    return(
-        <div key={index} className="navlink"><a id={link.id} href={link.href}>{link.name}</a></div>
-    )
-    });
-
-    return(
-        <nav id="navbar">
-            {navNodes}
-        </nav>
-    )
-}
-
-//Since this is a simple component that will not update when the user
-//types into it, we will make a “functional stateless component” or FSC
 const LoginWindow = (props) => {
     return (
 
@@ -193,7 +179,15 @@ const init = async () => {
     });
 
     ReactDOM.render(<LoginWindow csrf={data.csrfToken} />,
-        document.getElementById('content'));
+    document.getElementById('content'));
+
+    const advertisementNodes = document.querySelectorAll('#ad');
+    for(let i = 0; i < advertisementNodes.length;i++){
+        ReactDOM.render(
+            <Advertisement href='assets/img/ad.jpeg' alt='placeholder advertisement'/>,
+            advertisementNodes[i]
+        );
+    }
 };
 
 
