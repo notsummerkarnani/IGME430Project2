@@ -5,32 +5,45 @@
   <script crossorigin src="https://unpkg.com/react@17/umd/react.development.js"></script>
   <script crossorigin src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
   <link rel="shortcut icon" href="/assets/img/favicon.png"/>
-  <link rel="stylesheet" type="text/css" href="/assets/style.css"/>
+  <link rel="stylesheet" type="text/css" href="/bulma/bulma.css"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
 </head>
 <body>
   <section id="nav">
 
   </section>
 
-  <div id="ad">
+  <div id="root" class="section columns">
 
+    <div id="adColumn" class="column is-2">
+      <div id="ad" class="image mt-6"></div>
+      <div id="ad" class="image mt-6"></div>
+      <div id="ad" class="image mt-6"></div>
+      <div id="ad" class="image mt-6"></div>
+    </div>
+
+    <div id="main" class="column">
+        <section id="searchRecipe">
+
+        </section>
+        
+      <section id="errorMessage" class="container notification title">
+
+        </section>
+        
+        <section id="recipes">
+          
+        </section>
+    </div>
+
+    <div id="adColumn" class="column is-2">
+      <div id="ad" class="image mt-6"></div>
+      <div id="ad" class="image mt-6"></div>
+      <div id="ad" class="image mt-6"></div>
+      <div id="ad" class="image mt-6"></div>
+    </div>
   </div>
-
-  <div id="ad">
-
-  </div>
-
-  <section id="searchRecipe">
-
-  </section>
-  
-  <section id="errorMessage">
-
-  </section>
-  
-  <section id="recipes">
-    
-  </section>
   
   <script src="/assets/recipeBundle.js"></script>
 </body>

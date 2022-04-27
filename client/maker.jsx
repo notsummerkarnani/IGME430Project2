@@ -65,47 +65,95 @@ const RecipeList = (props)=>{
 
 const IngredientForm = (props) => {
     return (
-        <form id="ingredientForm"
-            name="ingredientForm"
-            onSubmit={handleIngredient}
-            action="/maker"
-            method="POST"
-            className="ingredientForm">
+        <div className='bg notification is-primary'>
+            <form id="ingredientForm"
+                name="ingredientForm"
+                onSubmit={handleIngredient}
+                action="/maker"
+                method="POST"
+                className="form">
 
-            <label htmlFor="name">Name: </label>
-            <input id="ingredientName" type="text" name="name" placeholder="Ingredient Name" />
-            <label htmlFor="category">Category: </label>
-            <select name="ingredientCategory" id="ingredientCategory" defaultValue="miscellaneous">
-                <option value='canned goods'>canned goods</option>
-                <option value='condiments'>condiments</option>
-                <option value='produce'>produce</option>
-                <option value='meats'>meats</option>
-                <option value='dairy'>dairy</option>
-                <option value='breakfast'>breakfast</option>
-                <option value='pasta and rice'>pasta and rice</option>
-                <option value='microwave'>microwave</option>
-                <option value='beverages'>beverages</option>
-                <option value='bakery'>bakery</option>
-                <option value='oils'>oils</option>
-                <option value='miscellaneous'>miscellaneous</option>
-            </select>
+                <div className='columns'>
+                    <div className='column is-8'>
+                        <div className='columns'>
+                            <div className='column is-8 field'>
+                                <label className="label" htmlFor="name">Name: </label>
+                                <div className='control'>
+                                    <input className="input" id="ingredientName" type="text" name="name" placeholder="Ingredient Name" />
+                                </div>
+                            </div>
+
+                            <div className='column field'>
+                                <label className="label" htmlFor="category">Category: </label>
+                                <div className='control'>
+                                    <select className="select is-normal" name="ingredientCategory" id="ingredientCategory" defaultValue="miscellaneous">
+                                        <option value='canned goods'>canned goods</option>
+                                        <option value='condiments'>condiments</option>
+                                        <option value='produce'>produce</option>
+                                        <option value='meats'>meats</option>
+                                        <option value='dairy'>dairy</option>
+                                        <option value='breakfast'>breakfast</option>
+                                        <option value='pasta and rice'>pasta and rice</option>
+                                        <option value='microwave'>microwave</option>
+                                        <option value='beverages'>beverages</option>
+                                        <option value='bakery'>bakery</option>
+                                        <option value='oils'>oils</option>
+                                        <option value='miscellaneous'>miscellaneous</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className='column'>
+                        <div className='columns'>
+                            <div className='column field'>
+                                <label className="label" htmlFor="quantity">Quantity: </label>
+                                <div className='control'>
+                                    <input className="input" id="ingredientQuantity" type="number" min="0" name="quantity" placeholder='Quantity'/>
+                                </div>
+                            </div>
+
+                            <div className='column field'>
+                                <label className="label" htmlFor="ingredientMeasurement">Measure: </label>
+                                <div className='control'>
+                                    <select className="select is-normal" name="ingredientMeasurement" id="ingredientMeasurement">
+                                        <option value="cups">cups</option>
+                                        <option value="fl oz">fluid ounces</option>
+                                        <option value="grams">grams</option>
+                                        <option value="lbs">lbs</option>
+                                        <option value="units">units</option>
+                                        <option value="bunch">bunch</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div className='field'>
+                    <input id="_csrf" type="hidden" name="_csrf" value={props.csrf} />
+                    <div className='control'>
+                        <input className="button is-fullwidth is-primary is-inverted title" type="submit" value="Make Ingredient" />
+                    </div>
+                </div>
+            </form>
+
+            <form id="ingredientClearer"
+                name="ingredientClearer"
+                action="/clearIngredients"
+                onSubmit={clearIngredient}
+                method="POST"
+                className="form">
+
+                <div className='field'>
+                    <div className='control'>
+                        <input className="button is-fullwidth is-danger" type="submit" value="Clear Ingredients" />
+                    </div>
+                </div>
+            </form>
+        </div>
         
-            <label htmlFor="quantity">Quantity: </label>
-            <input id="ingredientQuantity" type="number" min="0" name="quantity" />
-
-            <select name="ingredientMeasurement" id="ingredientMeasurement">
-                <option value="cups">cups</option>
-                <option value="fl oz">fluid ounces</option>
-                <option value="grams">grams</option>
-                <option value="lbs">lbs</option>
-                <option value="units">units</option>
-                <option value="bunch">bunch</option>
-            </select>
-
-            <input id="_csrf" type="hidden" name="_csrf" value={props.csrf} />
-
-            <input className="makeIngredientSubmit" type="submit" value="Make Ingredient" />
-        </form>
     );
 }
 
@@ -151,17 +199,6 @@ const IngredientList = (props) => {
 
     return (
         <div className="ingredientList">
-
-            <form id="ingredientClearer"
-                name="ingredientClearer"
-                action="/clearIngredients"
-                onSubmit={clearIngredient}
-                method="POST"
-                className="ingredientForm">
-
-                <input className="clearIngredientsSubmit" type="submit" value="Clear Ingredients" />
-            </form>
-
             {ingredientNodes}
         </div>
     );

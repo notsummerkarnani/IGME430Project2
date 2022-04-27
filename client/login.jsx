@@ -88,14 +88,26 @@ const LoginWindow = (props) => {
             onSubmit={handleLogin}
             action="/login"
             method="POST"
-            className="mainForm">
+            className="form">
 
-            <label htmlFor="username">Username: </label>
-            <input id="user" type="text" name="username" placeholder="username" />
-            <label htmlFor="pass">Password: </label>
-            <input id="pass" type="password" name="pass" placeholder="password" />
-            <input id="_csrf" type="hidden" name="_csrf" value={props.csrf} />
-            <input className="formSubmit" type="submit" value="Sign in" />
+            <div className='field'>
+                <label htmlFor="username">Username: </label>
+                <div className='control'>
+                    <input class="input" id="user" type="text" name="username" placeholder="username" />
+                </div>
+            </div>
+            <div className='field'>
+                <label htmlFor="pass">Password: </label>
+                <div className='control'>
+                    <input class="input" id="pass" type="password" name="pass" placeholder="password" />
+                </div>
+            </div>
+            <div className='field'>
+                <input id="_csrf" type="hidden" name="_csrf" value={props.csrf} />
+                <div className='control'>
+                    <input className="button is-link" type="submit" value="Sign in" />
+                </div>
+            </div>
         </form>
     );
 };

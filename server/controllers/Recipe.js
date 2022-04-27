@@ -1,4 +1,5 @@
 const nodeFetch = require('node-fetch');
+const config = require('../config.js');
 
 const recipePage = (req, res) => res.render('recipe');
 
