@@ -42,16 +42,26 @@ const RecipeList = (props)=>{
         });
 
         return (
-            <div key={recipe.id} id={recipe.id} className="recipe">
-                <img src={recipe.thumbnail} alt="Meal Image" />
-                <h2 className="recipeName">{recipe.name}</h2>
-                <h3 className="recipeCategory">Category:{recipe.category}</h3>
-                <div className='recipeIngredients'>
-                    <h3>Ingredients:</h3>
-                    <ul>{ingredientNodes}</ul>
+            <div key={recipe.id} className='tile is-ancestor bg notification is-primary m-3'>
+                <div id={recipe.id} className="tile is-parent">
+                    <div>
+                        <div className='tile is-child columns level'>
+                            <div className='column is-5 content'>
+                                <p className="title">{recipe.name}</p>
+                                <p className="subtitle">Category:{recipe.category}</p>
+                                <div className='recipeIngredients level-left'>
+                                    <h3>Ingredients:</h3>
+                                    <ul>{ingredientNodes}</ul>
+                                </div>
+                            </div>
+                            <div className='column'>
+                                <img src={recipe.thumbnail} alt="Meal Image" className='level-right image is-square is-pulled-right' />
+                            </div>
+                        </div>
+                        <p>Instructions: </p><p>{recipe.instructions}</p>
+                        <p>Youtube Link: <a href={recipe.youtube}>{recipe.youtube}</a></p>
+                    </div>
                 </div>
-                <h3>Instructions: </h3><p>{recipe.instructions}</p>
-                <h3>Youtube Link: <a href={recipe.youtube}>{recipe.youtube}</a></h3>
             </div>
         );
     });
@@ -166,39 +176,75 @@ const IngredientList = (props) => {
         );
     }
 
-    const ingredientNodes = props.ingredients.map(ingredient => {
+    let rowChange;
+    let ingredientNodes = props.ingredients.map((ingredient, index) => {
+        if(index%3===0) {
+            rowChange = <div className="tile is-ancestor notification is-info"></div>;
+        }
+
         return (
-            <div key={ingredient._id} id={ingredient._id} className="ingredient">
-                <form action="/deleteIngredient"
-                    name="deleteIngredientForm"
-                    id="deleteIngredientForm"
-                    method="POST"
-                    className="ingredientForm"
-                    onSubmit={deleteIngredient}>
+            <div key={ingredient._id} className='tile is-parent'>
+                <div id={ingredient._id} className="tile is-child box notification is-primary">
+                    <div className='columns'>
+                        
+                        <form id="recipeFinder"
+                            name="recipeFinder"
+                            action="/findRecipe"
+                            onSubmit={getRecipe}
+                            method="POST"
+                            className="column">
 
-                    <input type="submit" name="deleteIngredientSubmit" id="deleteIngredientSubmit" value=" X " />
-                </form>
+                            <input className="button is-primary is-inverted" type="submit" value="Find Recipes" />
+                        </form>
 
-                <form id="recipeFinder"
-                    name="recipeFinder"
-                    action="/findRecipe"
-                    onSubmit={getRecipe}
-                    method="POST"
-                    className="ingredientForm">
+                        <form action="/deleteIngredient"
+                            name="deleteIngredientForm"
+                            id="deleteIngredientForm"
+                            method="POST"
+                            className="column"
+                            onSubmit={deleteIngredient}>
 
-                    <input className="findRecipeButton" type="submit" value="Find Recipes" />
-                </form>
-                
-                <h3 className="ingredientName">{ingredient.name}</h3>
-                <h3 className="ingredientCategory">Category:{ingredient.category}</h3>
-                <h3 className="ingredientQuantity">Quantity:{ingredient.quantity} {ingredient.measurement}</h3>
-                <div className='IngredientRecipes'></div>
+                            <div className='field is-pulled-right'>
+                                <div className='control'>
+                                    <button className="delete is-large" type="submit" name="deleteIngredientSubmit" id="deleteIngredientSubmit" value=" X "></button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div className='content'>
+                        <p className="is-size-2">{ingredient.name}</p>
+                        <p className="is-size-4">Category:{ingredient.category}</p>
+                        <p className="is-size-4">Quantity:{ingredient.quantity} {ingredient.measurement}</p>
+                        <div className='IngredientRecipes'></div>
+                    </div>
+                </div>
             </div>
+            
         );
     });
 
-    return (
-        <div className="ingredientList">
+    //break nodes into groups so that they can be displayed properly
+    let groupedNodes = [];
+    let row = -1;
+    ingredientNodes.map((node, index)=>{
+        if(index%3===0) {
+            row++;
+            groupedNodes[row] = [];
+        }
+        groupedNodes[row].push(node);
+    })
+
+    ingredientNodes = groupedNodes.map((nodes, index)=>{
+        return (
+                <div key={index} className='tile is-ancestor'>
+                    {nodes}
+                </div>
+        );
+    });
+
+    return(
+        <div>
             {ingredientNodes}
         </div>
     );
@@ -239,7 +285,7 @@ const deleteIngredient = (e)=>{
 
     const _csrf = document.querySelector('#_csrf').value;
 
-    helper.sendPost(e.target.action, {'_id':e.target.parentElement.id, _csrf}, loadIngredientsFromServer);
+    helper.sendPost(e.target.action, {'_id':e.target.parentElement.parentElement.id, _csrf}, loadIngredientsFromServer);
 }
 
 const getRecipe = (e)=>{
@@ -248,14 +294,13 @@ const getRecipe = (e)=>{
     
     const _csrf = document.querySelector('#_csrf').value;
 
-    helper.sendPost(e.target.action, {'_id':e.target.parentElement.id, _csrf}, handleRecipe);
+    helper.sendPost(e.target.action, {'_id':e.target.parentElement.parentElement.id, _csrf}, handleRecipe);
 }
 
 const handleRecipe = (e)=>{
-    //console.log(e);
     ReactDOM.render(
         <RecipeList meals={e}/>,
-        document.getElementById(e[0]._id).getElementsByClassName('IngredientRecipes')[0]
+        document.getElementById('recipes')
     );
 }
 
