@@ -1,6 +1,7 @@
 const helper = require('./helper.js');
 const NavBar = require('./nav.jsx');
 const Advertisement = require('./ad.jsx');
+const RecipeList = require('./recipelist.jsx');
 
 
 const navLinks = [
@@ -22,57 +23,6 @@ const navLinks = [
 ];
 
 //start of react components
-const RecipeList = (props)=>{
-    console.log(props);
-
-    if (props.meals.length === 0) {
-        return (
-            <div className="recipeList">
-                <h3 className="emptyRecipe">No Recipes Found!</h3>
-            </div>
-        );
-    }
-
-    const recipeNodes = props.meals.map(recipe => {
-
-        const ingredientNodes = recipe.ingredients.map((ingredient, index)=>{
-           return(
-               <li key={index}>{ingredient}</li>
-           ); 
-        });
-
-        return (
-            <div key={recipe.id} className='tile is-ancestor bg notification is-primary m-3'>
-                <div id={recipe.id} className="tile is-parent">
-                    <div>
-                        <div className='tile is-child columns level'>
-                            <div className='column is-5 content'>
-                                <p className="title">{recipe.name}</p>
-                                <p className="subtitle">Category:{recipe.category}</p>
-                                <div className='recipeIngredients level-left'>
-                                    <h3>Ingredients:</h3>
-                                    <ul>{ingredientNodes}</ul>
-                                </div>
-                            </div>
-                            <div className='column'>
-                                <img src={recipe.thumbnail} alt="Meal Image" className='level-right image is-square is-pulled-right' />
-                            </div>
-                        </div>
-                        <p>Instructions: </p><p>{recipe.instructions}</p>
-                        <p>Youtube Link: <a href={recipe.youtube}>{recipe.youtube}</a></p>
-                    </div>
-                </div>
-            </div>
-        );
-    });
-
-    return (
-        <div className="recipeList">
-            {recipeNodes}
-        </div>
-    );
-}
-
 const IngredientForm = (props) => {
     return (
         <div className='bg notification is-primary'>
@@ -95,8 +45,8 @@ const IngredientForm = (props) => {
 
                             <div className='column field'>
                                 <label className="label" htmlFor="category">Category: </label>
-                                <div className='control'>
-                                    <select className="select is-normal" name="ingredientCategory" id="ingredientCategory" defaultValue="miscellaneous">
+                                <div className='control select'>
+                                    <select className="select " name="ingredientCategory" id="ingredientCategory" defaultValue="miscellaneous">
                                         <option value='canned goods'>canned goods</option>
                                         <option value='condiments'>condiments</option>
                                         <option value='produce'>produce</option>
@@ -126,8 +76,8 @@ const IngredientForm = (props) => {
 
                             <div className='column field'>
                                 <label className="label" htmlFor="ingredientMeasurement">Measure: </label>
-                                <div className='control'>
-                                    <select className="select is-normal" name="ingredientMeasurement" id="ingredientMeasurement">
+                                <div className='control select'>
+                                    <select name="ingredientMeasurement" id="ingredientMeasurement">
                                         <option value="cups">cups</option>
                                         <option value="fl oz">fluid ounces</option>
                                         <option value="grams">grams</option>
@@ -144,7 +94,7 @@ const IngredientForm = (props) => {
                 <div className='field'>
                     <input id="_csrf" type="hidden" name="_csrf" value={props.csrf} />
                     <div className='control'>
-                        <input className="button is-fullwidth is-primary is-inverted title" type="submit" value="Make Ingredient" />
+                        <input className="button is-hoverable is-fullwidth is-primary is-inverted title" type="submit" value="Make Ingredient" />
                     </div>
                 </div>
             </form>
@@ -170,7 +120,7 @@ const IngredientForm = (props) => {
 const IngredientList = (props) => {
     if (props.ingredients.length === 0) {
         return (
-            <div className="ingredientList">
+            <div className="container notification title is-danger">
                 <h3 className="emptyIngredient">No Ingredients yet!</h3>
             </div>
         );

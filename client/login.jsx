@@ -90,22 +90,18 @@ const LoginWindow = (props) => {
             method="POST"
             className="form">
 
-            <div className='field'>
-                <label htmlFor="username">Username: </label>
+            <div className='bg notification is-primary field is-grouped level is-justify-content-center'>
+                <label className='label is-size-4 pr-4' htmlFor="username">Username: </label>
                 <div className='control'>
-                    <input class="input" id="user" type="text" name="username" placeholder="username" />
+                    <input className="input" id="user" type="text" name="username" placeholder="username" />
                 </div>
-            </div>
-            <div className='field'>
-                <label htmlFor="pass">Password: </label>
+                <label className="label is-size-4 pr-4" htmlFor="pass">Password: </label>
                 <div className='control'>
-                    <input class="input" id="pass" type="password" name="pass" placeholder="password" />
+                    <input className="input" id="pass" type="password" name="pass" placeholder="password" />
                 </div>
-            </div>
-            <div className='field'>
                 <input id="_csrf" type="hidden" name="_csrf" value={props.csrf} />
                 <div className='control'>
-                    <input className="button is-link" type="submit" value="Sign in" />
+                    <input className="button is-hoverable" type="submit" value="Sign in" />
                 </div>
             </div>
         </form>
@@ -113,46 +109,40 @@ const LoginWindow = (props) => {
 };
 
 const SignupWindow = (props) => {
+    console.log(props);
     return (
 
-        <form id="signupForm"
-            name="signupForm"
-            onSubmit={handleSignup}
-            action="/signup"
+        <form id={props.props.id}
+            name={props.props.id}
+            onSubmit={props.props.submit}
+            action={props.props.action}
             method="POST"
-            className="mainForm"
-        >
-            <label htmlFor="username">Username: </label>
-            <input id="user" type="text" name="username" placeholder="username" />
-            <label htmlFor="pass">Password: </label>
-            <input id="pass" type="password" name="pass" placeholder="password" />
-            <label htmlFor="pass2">Password: </label>
-            <input id="pass2" type="password" name="pass2" placeholder="retype password" />
-            <input id="_csrf" type="hidden" name="_csrf" value={props.csrf} />
-            <input className="formSubmit" type="submit" value="Sign in" />
+            className="form">
 
-        </form>
-    );
-};
-
-const ChangePassForm = (props) => {
-    return (
-
-        <form id="changePassForm"
-            name="changePassForm"
-            onSubmit={handleChangePass}
-            action="/changePass"
-            method="POST"
-            className="mainForm"
-        >
-            <label htmlFor="username">Username: </label>
-            <input id="user" type="text" name="username" placeholder="username" />
-            <label htmlFor="pass">Current Password: </label>
-            <input id="pass" type="password" name="pass" placeholder="current password" />
-            <label htmlFor="pass2">New Password: </label>
-            <input id="pass2" type="password" name="pass2" placeholder="new password" />
-            <input id="_csrf" type="hidden" name="_csrf" value={props.csrf} />
-            <input className="formSubmit" type="submit" value="Change Password" />
+            <div className='bg notification is-primary field columns is-vcentered'>
+                <div className='column'>
+                    <label className={props.props.labelClass} htmlFor={props.props.inputs[1].id} >{props.props.inputs[1].text} </label>
+                    <div className='control'>
+                        <input className={props.props.inputs[1].class} id={props.props.inputs[1].id} type={props.props.inputs[1].type} name={props.props.inputs[1].name} placeholder={props.props.inputs[1].name} />
+                    </div>
+                </div>
+                <div className='column'>
+                    <label className={props.props.labelClass} htmlFor={props.props.inputs[2].id} >{props.props.inputs[2].text} </label>
+                    <div className='control'>
+                        <input className={props.props.inputs[2].class} id={props.props.inputs[2].id} type={props.props.inputs[2].type} name={props.props.inputs[2].name} placeholder={props.props.inputs[2].name} />
+                    </div>
+                </div>
+                <div className='column'>
+                    <label className={props.props.labelClass} htmlFor={props.props.inputs[3].id} >{props.props.inputs[3].text} </label>
+                    <div className='control'>
+                        <input className={props.props.inputs[3].class} id={props.props.inputs[3].id} type={props.props.inputs[3].type} name={props.props.inputs[3].name} placeholder={props.props.inputs[3].name} />                
+                    </div>
+                </div>
+                <div className='control'>
+                    <input id="_csrf" type="hidden" name="_csrf" value={props.props.csrf} />
+                    <input className={props.props.inputs[4].class} type={props.props.inputs[4].type} value={props.props.inputs[3].value} />
+                </div>
+            </div>
 
         </form>
     );
@@ -170,9 +160,20 @@ const init = async () => {
     const signupButton = document.getElementById('signupButton');
     const changePassButton = document.getElementById('changePassButton');
 
+    loginButton.classList.add('has-background-warning');
+    loginButton.classList.add('has-text-black');
+
 
     loginButton.addEventListener('click',(e)=>{
         e.preventDefault();
+
+        loginButton.classList.add('has-background-warning');
+        signupButton.classList.remove('has-background-warning');
+        changePassButton.classList.remove('has-background-warning');
+        loginButton.classList.add('has-text-black');
+        signupButton.classList.remove('has-text-black');
+        changePassButton.classList.remove('has-text-black');      
+
         ReactDOM.render(<LoginWindow csrf={data.csrfToken}/>,
             document.getElementById('content'));
         return false;
@@ -180,14 +181,102 @@ const init = async () => {
 
     signupButton.addEventListener('click',(e)=>{
         e.preventDefault();
-        ReactDOM.render(<SignupWindow csrf={data.csrfToken} />,
+
+        loginButton.classList.remove('has-background-warning');
+        signupButton.classList.add('has-background-warning');
+        changePassButton.classList.remove('has-background-warning'); 
+        loginButton.classList.remove('has-text-black');
+        signupButton.classList.add('has-text-black');
+        changePassButton.classList.remove('has-text-black');     
+
+        let props = {
+            id:"signupForm",
+            submit: handleSignup,
+            action: "/signup",
+            labelClass: 'label is-size-4 pr-4',
+            inputs:{
+                1: {
+                name: 'username',
+                text: 'Username: ',
+                id: 'user',
+                type: 'text',
+                class: 'input'
+                },
+                2: {
+                    name: 'password',
+                    text: 'Password: ',
+                    id: 'pass',
+                    type: 'password',
+                    class: 'input'
+                },
+                3: {
+                    name: 'password',
+                    text: 'Retype Password: ',
+                    id: 'pass2',
+                    type: 'password',
+                    class: 'input'
+                },
+                4: {
+                    type: 'submit',
+                    value: 'Sign Up',
+                    class: 'button is-hoverable'
+                }
+            },
+            csrf: data.csrfToken,
+        };
+
+        ReactDOM.render(<SignupWindow props={props} />,
             document.getElementById('content'));
         return false;
     });
 
     changePassButton.addEventListener('click',(e)=>{
         e.preventDefault();
-        ReactDOM.render(<ChangePassForm csrf={data.csrfToken} />,
+
+        loginButton.classList.remove('has-background-warning');
+        signupButton.classList.remove('has-background-warning');
+        changePassButton.classList.add('has-background-warning');
+        loginButton.classList.remove('has-text-black');
+        signupButton.classList.remove('has-text-black');
+        changePassButton.classList.add('has-text-black');     
+
+        let props = {
+            id:"changePassForm",
+            submit: handleChangePass,
+            action: "/changePass",
+            labelClass: 'label is-size-4 pr-4',
+            inputs:{
+                1: {
+                name: 'username',
+                text: 'Username: ',
+                id: 'user',
+                type: 'text',
+                class: 'input'
+                },
+                2: {
+                    name: 'password',
+                    text: 'Current Password: ',
+                    id: 'pass',
+                    type: 'password',
+                    class: 'input'
+                },
+                3: {
+                    name: 'password',
+                    text: 'New Password: ',
+                    id: 'pass2',
+                    type: 'password',
+                    class: 'input'
+                },
+                4: {
+                    type: 'submit',
+                    value: 'Change Password',
+                    class: 'button is-hoverable'
+                }
+            },
+            csrf: data.csrfToken,
+        };
+
+        ReactDOM.render(<SignupWindow props={props} />,
             document.getElementById('content'));
         return false;
     });

@@ -18,7 +18,7 @@ const NavBar = (props)=>{
     });
 
     return(
-        <nav id="navbar" className="navbar is-dark has-shadow">
+        <nav id="navbar" className="navbar is-fixed-top is-dark has-shadow">
             <div className="navbar-brand">
                 <a className="navbar-item" href={window.location.pathname}>
                     <i className="fas fa-search fa-2xl"></i>

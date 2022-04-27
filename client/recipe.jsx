@@ -1,6 +1,7 @@
 const helper = require('./helper.js');
 const NavBar = require('./nav.jsx');
 const Advertisement = require('./ad.jsx');
+const RecipeList = require('./recipelist.jsx');
 
 
 const navLinks = [
@@ -29,66 +30,33 @@ const RecipeForm = (props)=>{
             name="searchRecipeForm"
             onSubmit={searchRecipes}
             method="POST"
-            className='RecipeForm'>
+            className='form'>
 
-            <label htmlFor="recipeInput">Recipe Name: </label>
-            <input type="text" name="recipeInput" id="recipeInput" placeholder='Recipe Name' />
-
-            <input id="_csrf" type="hidden" name="_csrf" value={props.csrf} />
-
-            <input className="searchRecipeSubmit" type="submit" value="Search Recipe" />
+            <div className='bg notification is-primary field is-grouped level is-justify-content-center'>
+                <label className='label is-size-4 pr-4' htmlFor="recipeInput">Recipe Name:</label>
+                <div className='control'>
+                    <input className='input' type="text" name="recipeInput" id="recipeInput" placeholder='Recipe Name' />
+                </div>
+                <div className='control'>
+                    <input id="_csrf" type="hidden" name="_csrf" value={props.csrf} />
+                    <input className="button is-hoverable" type="submit" value="Search Recipe" />
+                </div>
+            </div>
         </form>
     )
 }
-
-const RecipeList = (props)=>{
-    console.log(props);
-
-    if (props.meals.length === 0) {
-        return (
-            <div className="recipeList">
-                <h3 className="emptyRecipe">No Recipes Found!</h3>
-            </div>
-        );
-    }
-
-    const recipeNodes = props.meals.map(recipe => {
-
-        const ingredientNodes = recipe.ingredients.map((ingredient, index)=>{
-           return(
-               <li key={index}>{ingredient}</li>
-           ); 
-        });
-
-        return (
-            <div key={recipe.id} id={recipe.id} className="recipe">
-                <img src={recipe.thumbnail} alt="Meal Image" />
-                <h2 className="recipeName">{recipe.name}</h2>
-                <h3 className="recipeCategory">Category:{recipe.category}</h3>
-                <div className='recipeIngredients'>
-                    <h3>Ingredients:</h3>
-                    <ul>{ingredientNodes}</ul>
-                </div>
-                <h3>Instructions: </h3><p>{recipe.instructions}</p>
-                <h3>Youtube Link: <a href={recipe.youtube}>{recipe.youtube}</a></h3>
-            </div>
-        );
-    });
-
-    return (
-        <div className="recipeList">
-            {recipeNodes}
-        </div>
-    );
-}
 //end of react components
-
 const searchRecipes = (e)=>{
     e.preventDefault();
     helper.hideError();
 
     const _csrf = document.querySelector('#_csrf').value;
     const name = document.querySelector('#recipeInput').value;
+
+    if(!name){
+        helper.handleError('Recipe name is required!');
+        return false;
+    }
 
     helper.sendPost(e.target.action, {_csrf: _csrf, name: name}, handleRecipes)
 }
