@@ -31,21 +31,38 @@ const makeIngredient = async(req, res) => {
         });
     } catch (err) {
         if (err.code === 11000) {
-            return res.status(400).json({ error: 'Ingredient already exists!' });
+            return updateIngredient(req, res);
         }
         return res.status(400).json({ error: 'An error occured' });
     }
 };
+
 const getIngredients = (req, res) => IngredientModel.findByOwner(
     req.session.account._id,
     (err, docs) => {
         if (err) {
-            console.log(err);
             return res.status(400).json({ error: 'An error occured!' });
         }
-        return res.json({ ingredients: docs });
-    },
+        return res.status(200).json({ ingredients: docs });
+    }
 );
+
+const updateIngredient = (req, res) => {
+    IngredientModel.findByName(req.session.account._id, req.body.name,
+        async(err, docs) => {
+            if (err) {
+                return res.status(400).json({ error: 'An error occured!' });
+            }
+
+            const updatedIngredient = docs;
+            if (req.body.measurement === updatedIngredient.measurement) {
+                updatedIngredient.quantity = parseInt(updatedIngredient.quantity, 10) + parseInt(req.body.quantity, 10);
+                await updatedIngredient.save();
+                return res.status(200).json(updatedIngredient);
+            }
+            return res.status(400).json({ error: 'Measurement of updated ingredient must match the stored measurement!' });
+        });
+}
 
 const findRecipe = async(req, res) => {
         IngredientModel.findByID(req.body._id, async(err, docs) => {
