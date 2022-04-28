@@ -247,6 +247,10 @@ const getRecipe = (e)=>{
 
 //handles response from recipe request
 const handleRecipe = (e)=>{
+    if(e.error){
+        return;
+    }
+    
     ReactDOM.render(
         <RecipeList meals={e}/>,
         document.getElementById('recipes')

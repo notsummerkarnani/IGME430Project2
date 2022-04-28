@@ -63,6 +63,10 @@ const searchRecipes = (e)=>{
 
 //handles recipe search request
 const handleRecipes = (e)=>{
+    if(e.error){
+        return;
+    }
+
     ReactDOM.render(
         <RecipeList meals={e}/>,
         document.getElementById('recipes')

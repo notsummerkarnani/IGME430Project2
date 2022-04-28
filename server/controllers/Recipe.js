@@ -4,21 +4,25 @@ const config = require('../config.js');
 const recipePage = (req, res) => res.render('recipe');
 
 // finds recipes by recipe name
-const searchRecipe = async (req, res) => {
-  const url = new URL(config.connections.nameEndpoint + req.body.name);
+const searchRecipe = async(req, res) => {
+        const url = new URL(config.connections.nameEndpoint + req.body.name);
 
-  const response = await nodeFetch(url);
-  const jsonData = await response.json();
+        const response = await nodeFetch(url);
+        const jsonData = await response.json();
 
-  const mealJSON = [];
+        if (!jsonData.meals) {
+            return res.status(400).json({ error: 'No recipes found!' });
+        }
 
-  jsonData.meals.map((meal) => {
-    const ingredients = [];
+        const mealJSON = [];
 
-    // format ingredients and measurements into an array
-    for (let i = 0; i < 20; i++) {
-      if (meal[`strIngredient${i + 1}`] && meal[`strMeasure${i + 1}`]) {
-        ingredients.push(`${meal[`strMeasure${i + 1}`]} ${meal[`strIngredient${i + 1}`]}`);
+        jsonData.meals.map((meal) => {
+                    const ingredients = [];
+
+                    // format ingredients and measurements into an array
+                    for (let i = 0; i < 20; i++) {
+                        if (meal[`strIngredient${i + 1}`] && meal[`strMeasure${i + 1}`]) {
+                            ingredients.push(`${meal[`strMeasure${i + 1}`]} ${meal[`strIngredient${i + 1}`]}`);
       }
     }
 
