@@ -54,7 +54,7 @@ const signup = async (req, res) => {
 
     return res.json({ redirect: '/maker' });
   } catch (err) {
-    console.log(err);
+    // console.log(err);
     if (err.code === 11000) {
       return res.status(400).json({ error: 'Username already in use' });
     }
@@ -80,7 +80,7 @@ const changePass = (req, res) => {
     if (err || !account) {
       return res.status(400).json({ error: err });
     }
-    console.log(account);
+    // console.log(account);
     const hash = await Account.generateHash(pass2);
     const updatedAcc = account;
     updatedAcc.password = hash;
