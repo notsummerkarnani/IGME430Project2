@@ -20,6 +20,7 @@ const navLinks = [
     }
 ];
 
+//handles login req
 const handleLogin = (e) => {
     e.preventDefault();
     helper.hideError();
@@ -37,6 +38,7 @@ const handleLogin = (e) => {
     return false;
 }
 
+//handles signup req
 const handleSignup = (e) => {
     e.preventDefault();
     helper.hideError();
@@ -58,6 +60,7 @@ const handleSignup = (e) => {
     return false;
 }
 
+//handles password change req
 const handleChangePass = (e)=>{
     e.preventDefault();
     helper.hideError();
@@ -166,7 +169,6 @@ const init = async () => {
 
     loginButton.addEventListener('click',(e)=>{
         e.preventDefault();
-
         loginButton.classList.add('has-background-warning');
         signupButton.classList.remove('has-background-warning');
         changePassButton.classList.remove('has-background-warning');

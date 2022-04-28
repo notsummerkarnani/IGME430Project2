@@ -126,12 +126,7 @@ const IngredientList = (props) => {
         );
     }
 
-    let rowChange;
-    let ingredientNodes = props.ingredients.map((ingredient, index) => {
-        if(index%3===0) {
-            rowChange = <div className="tile is-ancestor notification is-info"></div>;
-        }
-
+    let ingredientNodes = props.ingredients.map((ingredient) => {
         return (
             <div key={ingredient._id} className='tile is-parent'>
                 <div id={ingredient._id} className="tile is-child box notification is-primary">
@@ -201,7 +196,7 @@ const IngredientList = (props) => {
 }
 //end of react components
 
-
+//handles making ingredient request
 const handleIngredient = (e) => {
     e.preventDefault();
     helper.hideError();
@@ -221,6 +216,7 @@ const handleIngredient = (e) => {
     return false;
 }
 
+//handles clearing ingredients request 
 const clearIngredient = async(e)=>{
     e.preventDefault();
     helper.hideError();
@@ -229,6 +225,7 @@ const clearIngredient = async(e)=>{
     loadIngredientsFromServer();
 }
 
+//handles deleting one ingredient request 
 const deleteIngredient = (e)=>{
     e.preventDefault();
     helper.hideError();
@@ -238,6 +235,7 @@ const deleteIngredient = (e)=>{
     helper.sendPost(e.target.action, {'_id':e.target.parentElement.parentElement.id, _csrf}, loadIngredientsFromServer);
 }
 
+//handles getting a recipe request 
 const getRecipe = (e)=>{
     e.preventDefault();
     helper.hideError();
@@ -247,6 +245,7 @@ const getRecipe = (e)=>{
     helper.sendPost(e.target.action, {'_id':e.target.parentElement.parentElement.id, _csrf}, handleRecipe);
 }
 
+//handles response from recipe request
 const handleRecipe = (e)=>{
     ReactDOM.render(
         <RecipeList meals={e}/>,
@@ -254,6 +253,7 @@ const handleRecipe = (e)=>{
     );
 }
 
+//loads ingredients from server
 const loadIngredientsFromServer = async()=>{
     const response = await fetch('/getIngredients');
     const data = await response.json();

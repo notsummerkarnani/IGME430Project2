@@ -33,6 +33,7 @@ const sendPost = async(url, data, handler) => {
     }
 };
 
+//hides the error message
 const hideError = () => {
     document.getElementById('errorMessage').innerHTML = null;
     document.getElementById('errorMessage').classList.remove('is-danger');

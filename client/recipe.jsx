@@ -61,6 +61,7 @@ const searchRecipes = (e)=>{
     helper.sendPost(e.target.action, {_csrf: _csrf, name: name}, handleRecipes)
 }
 
+//handles recipe search request
 const handleRecipes = (e)=>{
     ReactDOM.render(
         <RecipeList meals={e}/>,

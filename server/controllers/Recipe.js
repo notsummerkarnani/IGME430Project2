@@ -3,6 +3,7 @@ const config = require('../config.js');
 
 const recipePage = (req, res) => res.render('recipe');
 
+// finds recipes by recipe name
 const searchRecipe = async (req, res) => {
   const url = new URL(config.connections.nameEndpoint + req.body.name);
 
